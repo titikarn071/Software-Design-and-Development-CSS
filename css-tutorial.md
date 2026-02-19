@@ -1277,65 +1277,107 @@ button:hover{
 
 ### ผลการทดลอง
 ```html
-[<!DOCTYPE html>
+[
+<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - การทดลองที่ 7</title>
+    <title>แดชบอร์ดร้านกาแฟ</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
+
+<div class="container">
+
+    <!-- เมนูซ้าย -->
+    <aside class="sidebar">
+        <h2>เมนู</h2>
+        <a class="active">หน้าแรก</a>
+        <a>รายงาน</a>
+        <a>การตั้งค่า</a>
+    </aside>
+
+    <!-- เนื้อหา -->
+    <main class="main">
+
+        <!-- header -->
+        <div class="topbar">
             <h1>📊 แดชบอร์ด</h1>
-            <nav>
+            <div>
                 <button class="btn">โปรไฟล์</button>
                 <button class="btn logout">ออกจากระบบ</button>
-            </nav>
-        </header>
+            </div>
+        </div>
 
-        <aside class="sidebar">
-            <h2>เมนู</h2>
-            <ul>
-                <li class="active">หน้าแรก</li>
-                <li>รายงาน</li>
-                <li>การตั้งค่า</li>
-            </ul>
-        </aside>
-
-        <main class="main-content">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>ยอดขายรวม</h3>
-                    <p>฿150,000</p>
-                </div>
-
-                <div class="stat-card">
-                    <h3>จำนวนออเดอร์</h3>
-                    <p>1,234</p>
-                </div>
-
-                <div class="stat-card">
-                    <h3>ลูกค้าใหม่</h3>
-                    <p>45</p>
-                </div>
+        <!-- การ์ด -->
+        <div class="cards">
+            <div class="card">
+                <p>ยอดขายรวม</p>
+                <h2>฿150,000</h2>
             </div>
 
-            <div class="chart-container">
-                <div class="chart">
-                    <h3>📈 กราฟยอดขาย</h3>
-                    <p class="placeholder">พื้นที่แสดงกราฟ</p>
-                </div>
-
-                <div class="chart">
-                    <h3>🥇 สินค้าขายดี</h3>
-                    <p class="placeholder">พื้นที่แสดงกราฟ</p>
-                </div>
+            <div class="card">
+                <p>จำนวนออเดอร์</p>
+                <h2>1,234</h2>
             </div>
-        </main>
-    </div>
+
+            <div class="card">
+                <p>ลูกค้าใหม่</p>
+                <h2>45</h2>
+            </div>
+        </div>
+
+        <!-- กราฟ -->
+        <div class="charts">
+
+            <div class="card">
+                <h3>📈 กราฟยอดขาย</h3>
+                <canvas id="salesChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h3>🏆 สินค้าขายดี</h3>
+                <canvas id="productChart"></canvas>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<script>
+// กราฟเส้น
+new Chart(document.getElementById('salesChart'), {
+    type: 'line',
+    data: {
+        labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.'],
+        datasets: [{
+            label: 'ยอดขาย',
+            data: [12000,19000,15000,22000,18000,25000],
+            borderWidth: 3,
+            tension: 0.4
+        }]
+    }
+});
+
+// กราฟแท่ง
+new Chart(document.getElementById('productChart'), {
+    type: 'bar',
+    data: {
+        labels: ['เอสเพรสโซ่','ลาเต้','คาปูชิโน','มอคค่า'],
+        datasets: [{
+            label: 'จำนวนขาย',
+            data: [50,40,35,60],
+            borderWidth: 2
+        }]
+    }
+});
+</script>
+
 </body>
-</html>]
+</html>
+]
 ```
 ```css
 [*{
@@ -1461,6 +1503,102 @@ body{
 .placeholder{
     margin-top:20px;
     background:#f1f4f9;
+
+
+    body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#f2f4f8;
+}
+
+.container{
+    display:flex;
+}
+
+/* sidebar */
+.sidebar{
+    width:220px;
+    height:100vh;
+    background:linear-gradient(#1f2d3d,#0d1b2a);
+    color:white;
+    padding:20px;
+}
+
+.sidebar h2{
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.sidebar a:hover,
+.sidebar .active{
+    background:#ff4f8b;
+}
+
+/* main */
+.main{
+    flex:1;
+    padding:20px;
+}
+
+/* topbar */
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#ff4f8b;
+    color:white;
+    margin-left:10px;
+    cursor:pointer;
+}
+
+.logout{
+    background:#ff2e63;
+}
+
+/* cards */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card h2{
+    color:#ff4f8b;
+}
+
+/* charts */
+.charts{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-top:20px;
+}
+
+canvas{
+    max-height:250px;
+}
+
 ]
 ```
 [![alt text](disbord-1.png)]
